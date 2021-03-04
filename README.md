@@ -14,3 +14,14 @@ Postman Collections with examples [here](https://www.getpostman.com/collections/
 
 ## Wireframes:
 
+Login Page
+('https://github.com/oscar-valen115/school-connected-api/blob/master/Wireframes/Wireframe_Logged_in_user_page_FullStackApp.png')
+
+Logged-in User Page
+('https://github.com/oscar-valen115/school-connected-api/blob/master/Wireframes/Wireframe_Logged_in_user_page_FullStackApp.png')
+
+Courses Page
+('https://github.com/oscar-valen115/school-connected-api/blob/master/Wireframes/Wireframe_courses_FullStackApp.png')
+
+Profile Page
+('https://github.com/oscar-valen115/school-connected-api/blob/master/Wireframes/Wireframe_ProfilePage_FullStackApp.png')
