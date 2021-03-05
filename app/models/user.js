@@ -10,11 +10,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  teacher: {
+    type: Boolean
+    // required: true
+  },
   token: String
 }, {
   timestamps: true,
   toObject: {
-    // remove `hashedPassword` field when we call `.toObject`
     transform: (_doc, user) => {
       delete user.hashedPassword
       return user
