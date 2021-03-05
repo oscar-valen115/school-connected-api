@@ -10,22 +10,15 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-/*
-
-router.get('/examples', requireToken, (req, res, next) => {
-  Example.find()
-    .then(examples => {
-      // `examples` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return examples.map(example => example.toObject())
+router.get('/courses', requireToken, (req, res, next) => {
+  Course.find()
+    .populate('owner')
+    .then(courses => {
+      return courses.map(course => course.toObject())
     })
-    // respond with status 200 and JSON of the examples
-    .then(examples => res.status(200).json({ examples: examples }))
-    // if an error occurs, pass it to the handler
+    .then(courses => res.status(200).json({ courses: courses }))
     .catch(next)
 })
-*/
 
 // GET /courses/60417f7225f17272bfeb25b0
 router.get('/courses/:id', requireToken, (req, res, next) => {
@@ -68,18 +61,17 @@ router.patch('/courses/:id', requireToken, removeBlanks, (req, res, next) => {
     .catch(next)
 })
 
-/*
 // DELETE /examples/5a7db6c74d55bc51bdf39793
-router.delete('/examples/:id', requireToken, (req, res, next) => {
-  Example.findById(req.params.id)
+router.delete('/courses/:id', requireToken, (req, res, next) => {
+  const courseId = req.params.id
+  Course.findById(courseId)
     .then(handle404)
-    .then(example => {
-      requireOwnership(req, example)
-      example.deleteOne()
+    .then(course => {
+      requireOwnership(req, course)
+      course.deleteOne()
     })
     .then(() => res.sendStatus(204))
     .catch(next)
 })
-*/
 
 module.exports = router
