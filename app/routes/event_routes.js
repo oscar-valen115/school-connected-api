@@ -2,8 +2,8 @@ const express = require('express')
 const passport = require('passport')
 const customErrors = require('../../lib/custom_errors')
 const handle404 = customErrors.handle404
-// const requireOwnership = customErrors.requireOwnership
-// const removeBlanks = require('../../lib/remove_blank_fields')
+const requireOwnership = customErrors.requireOwnership
+const removeBlanks = require('../../lib/remove_blank_fields')
 const Course = require('../models/course')
 const requireToken = passport.authenticate('bearer', { session: false })
 
@@ -27,7 +27,7 @@ router.get('/examples', requireToken, (req, res, next) => {
 })
 */
 
-// GET /examples/5a7db6c74d55bc51bdf39793
+// GET /courses/60417f7225f17272bfeb25b0
 router.get('/courses/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   const courseId = req.params.id
@@ -53,20 +53,22 @@ router.post('/courses', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-/*
-// PATCH /examples/5a7db6c74d55bc51bdf39793
-router.patch('/examples/:id', requireToken, removeBlanks, (req, res, next) => {
-  delete req.body.example.owner
-  Example.findById(req.params.id)
+// PATCH /courses/6041858a75a3c6788557ac68
+router.patch('/courses/:id', requireToken, removeBlanks, (req, res, next) => {
+  delete req.body.course.owner
+  const courseId = req.params.id
+  const courseData = req.body.course
+  Course.findById(courseId)
     .then(handle404)
-    .then(example => {
-      requireOwnership(req, example)
-      return example.updateOne(req.body.example)
+    .then(course => {
+      requireOwnership(req, course)
+      return course.updateOne(courseData)
     })
     .then(() => res.sendStatus(204))
     .catch(next)
 })
 
+/*
 // DELETE /examples/5a7db6c74d55bc51bdf39793
 router.delete('/examples/:id', requireToken, (req, res, next) => {
   Example.findById(req.params.id)
