@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
+const Schema = mongoose.Schema
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -15,14 +16,17 @@ const userSchema = new mongoose.Schema({
     // required: true
   },
   token: String
+
 }, {
   timestamps: true,
   toObject: {
+    virtuals: true,
     transform: (_doc, user) => {
       delete user.hashedPassword
       return user
     }
-  }
+  },
+  toJSON: { virtuals: true }
 })
 
 module.exports = mongoose.model('User', userSchema)

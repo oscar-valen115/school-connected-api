@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
+// const User = require('../user')
 const Schema = mongoose.Schema
-
-const courseSchema = new Schema({
+const postSchema = new Schema({
   title: {
     type: String,
     required: true
@@ -12,11 +12,10 @@ const courseSchema = new Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   }
 }, {
   timestamps: true
-})
-
-module.exports = mongoose.model('Course', courseSchema)
+}
+)
+module.exports = postSchema
