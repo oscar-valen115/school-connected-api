@@ -10,10 +10,6 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-router.get('/homepage', requireToken, (req, res, next) => {
-  console.log('Made it to the homepage')
-})
-
 router.get('/courses', requireToken, (req, res, next) => {
   Course.find()
     .populate('owner')
