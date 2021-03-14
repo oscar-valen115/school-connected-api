@@ -11,7 +11,8 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 router.get('/courses', requireToken, (req, res, next) => {
-  Course.find()
+  const userId = req.user._id
+  Course.find({ owner: userId })
     .populate('owner')
     .then(courses => {
       return courses.map(course => course.toObject())
@@ -26,9 +27,7 @@ router.get('/courses/:id', requireToken, (req, res, next) => {
   const courseId = req.params.id
   Course.findById(courseId)
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "example" JSON
     .then(course => res.status(200).json({ course: course.toObject() }))
-    // if an error occurs, pass it to the handler
     .catch(next)
 })
 
@@ -36,9 +35,7 @@ router.get('/courses/:id', requireToken, (req, res, next) => {
 // POST /courses
 router.post('/courses', requireToken, (req, res, next) => {
   const courseData = req.body.course
-  console.log('courseData info:', courseData)
   courseData.owner = req.user.id
-  console.log('Course Owner: ', courseData.owner)
   Course.create(courseData)
     .then(course => {
       res.status(201).json({ course: course.toObject() })
